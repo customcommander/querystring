@@ -13,7 +13,7 @@
                 requires: [ 'test', 'qs' ]
             }
         }
-    }).use('test', 'test-console', 'qs-tests', function (Y) {
+    }).use('node', 'test', 'test-console', 'qs-tests', function (Y) {
         var log = new Y.Test.Console({
             filters: {
                 pass: true,
