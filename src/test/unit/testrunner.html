@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="http://yui.yahooapis.com/3.14.1/build/yui/yui-min.js"></script>
+<script>
+    YUI({
+        modules: {
+            'qs': {
+                fullpath: '../../../build/qs.js'
+            },
+            'qs-tests': {
+                fullpath: 'js/qs-tests.js',
+                requires: [ 'test', 'qs' ]
+            }
+        }
+    }).use('test', 'test-console', 'qs-tests', function (Y) {
+        var log = new Y.Test.Console({
+            filters: {
+                pass: true,
+                fail: true,
+                status: true
+            }
+        });
+        log.render('#log');
+        Y.Test.Runner.run();
+    });
+</script>
+</head>
+<body class="yui3-skin-sam">
+    <div id="log"></div>
+</body>
+</html>
