@@ -40,6 +40,17 @@ suite.add(new Y.Test.Case({
         Y.Assert.areSame(0, qry.get('xyz', 0));
         Y.Assert.areSame(false, qry.get('xyz', false));
         Y.Assert.areSame(null, qry.get('xyz', null));
+    },
+
+    "use the query string from the current location if not supplied to QS()": function () {
+        Y.one(document.body).append('<iframe src="assets/iframe.html?foo=bar"></iframe>');
+        function ready() {
+            return window.frames[0] && window.frames[0].qry;
+        }
+        this.waitFor(ready, function () {
+            Y.Assert.areSame('bar', window.frames[0].qry.get('foo'));
+            Y.one('iframe').remove();
+        });
     }
 }));
 
