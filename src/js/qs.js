@@ -23,8 +23,8 @@ function QS(qstr, psep, vsep) {
     var qry_obj = {};
 
     qstr = typeof qstr === 'undefined' ? document.location.search.substr(1) : qstr;
-    psep = typeof psep === 'undefined' ? '&' : psep;
-    vsep = typeof vsep === 'undefined' ? '=' : vsep;
+    psep = psep === undefined || psep === null ? '&' : psep;
+    vsep = vsep === undefined || vsep === null ? '=' : vsep;
 
     if (typeof qstr === 'string' && qstr) {
         qry_obj = merge_pairs_into_object(split_pairs(qstr, psep, vsep));

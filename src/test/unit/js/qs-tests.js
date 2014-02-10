@@ -54,6 +54,35 @@ suite.add(new Y.Test.Case({
     }
 }));
 
+suite.add(new Y.Test.Case({
+
+    name: "QS() - separators",
+
+    "default separator for parameters is '&'": function () {
+        var qry = QS('a=1&b=2');
+        Y.Assert.areEqual(1, qry.get('a'));
+        Y.Assert.areEqual(2, qry.get('b'));
+    },
+
+    "default separator for values is '='": function () {
+        var qry = QS('a=1&b=2');
+        Y.Assert.areEqual(1, qry.get('a'));
+        Y.Assert.areEqual(2, qry.get('b'));
+    },
+
+    "allow custom separator for parameters": function () {
+        var qry = QS('a=1@b=2', '@');
+        Y.Assert.areEqual(1, qry.get('a'));
+        Y.Assert.areEqual(2, qry.get('b'));
+    },
+
+    "allow custom separator for values": function () {
+        var qry = QS('a:1&b:2', null, ':');
+        Y.Assert.areEqual(1, qry.get('a'));
+        Y.Assert.areEqual(2, qry.get('b'));
+    }
+}));
+
 Y.Test.Runner.add(suite);
 
 });
