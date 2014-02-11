@@ -83,6 +83,19 @@ suite.add(new Y.Test.Case({
     }
 }));
 
+suite.add(new Y.Test.Case({
+
+    name: "array support",
+
+    "should support arrays": function () {
+        var qry = QS('foo=1&foo=2&foo=3&bar=4&bar=5&bar=6');
+        Y.Assert.isArray(qry.get('foo'), 'Expected foo to be an array');
+        Y.Assert.isArray(qry.get('bar'), 'Expected bar to be an array');
+        Y.ArrayAssert.itemsAreEqual([1,2,3], qry.get('foo'));
+        Y.ArrayAssert.itemsAreEqual([4,5,6], qry.get('bar'));
+    }
+}));
+
 Y.Test.Runner.add(suite);
 
 });

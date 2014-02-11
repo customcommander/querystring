@@ -14,10 +14,19 @@ function merge_into_object(pair, obj) {
 
     if (obj[key] === undefined) {
         if (!subkey) {
-            obj[key] = pair.value;
+            obj[key] = decodeURIComponent(pair.value);
         } else {
             obj[key] = {};
             merge_into_object({ key: subkey, value: pair.value }, obj[key]);
+        }
+    } else if (typeof obj[key] === 'string' || typeof obj[key] === 'number') {
+        if (!subkey) {
+            obj[key] = [ obj[key] ];
+            obj[key].push( decodeURIComponent(pair.value) );
+        }
+    } else if (Array.isArray(obj[key])) {
+        if (!subkey) {
+            obj[key].push( decodeURIComponent(pair.value) );
         }
     }
 }
@@ -91,7 +100,7 @@ function QS(qstr, psep, vsep) {
             if (qry_obj[key] === undefined) {
                 return def_val;
             }
-            return decodeURIComponent(qry_obj[key]);
+            return qry_obj[key];
         }
     }
 }
