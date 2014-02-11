@@ -1,3 +1,27 @@
+/**
+@private
+@param {Object} pair
+@param {Object} obj
+**/
+function merge_into_object(pair, obj) {
+    var key = pair.key,
+        subkey;
+
+    if (key.indexOf('.')>0) {
+        subkey = key.substr(key.indexOf('.')+1);
+        key    = key.substr(0, key.indexOf('.'));
+    }
+
+    if (obj[key] === undefined) {
+        if (!subkey) {
+            obj[key] = pair.value;
+        } else {
+            obj[key] = {};
+            merge_into_object({ key: subkey, value: pair.value }, obj[key]);
+        }
+    }
+}
+
 function split_pairs(qstr, psep, vsep) {
     return qstr.split(psep).map(function (pair) {
         pair = pair.split(vsep);
@@ -8,7 +32,7 @@ function split_pairs(qstr, psep, vsep) {
 function merge_pairs_into_object(pairs) {
     var obj =  {};
     pairs.forEach(function (pair) {
-        obj[pair.key] = pair.value;
+        merge_into_object(pair, obj);
     });
     return obj;
 }
