@@ -102,7 +102,7 @@ function QS(qstr, psep, vsep) {
             }
             return qry_obj[key];
         }
-    }
+    };
 }
 
 NS.QS = QS;
