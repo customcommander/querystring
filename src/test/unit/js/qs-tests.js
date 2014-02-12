@@ -93,6 +93,12 @@ suite.add(new Y.Test.Case({
         Y.Assert.isArray(qry.get('bar'), 'Expected bar to be an array');
         Y.ArrayAssert.itemsAreEqual([1,2,3], qry.get('foo'));
         Y.ArrayAssert.itemsAreEqual([4,5,6], qry.get('bar'));
+    },
+
+    "array values should be decoded": function () {
+        var qry = QS( 'url='+encodeURIComponent('http://url?a=1')
+                    +'&url='+encodeURIComponent('http://url?a=2') );
+        Y.ArrayAssert.itemsAreEqual(['http://url?a=1','http://url?a=2'], qry.get('url'));
     }
 }));
 
