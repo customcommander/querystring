@@ -68,7 +68,7 @@ function QS(qstr, psep, vsep) {
 
     var qry_obj = {};
 
-    qstr = typeof qstr === 'undefined' ? document.location.search.substr(1) : qstr;
+    qstr = qstr === undefined || qstr === null ? document.location.search.substr(1) : qstr;
     psep = psep === undefined || psep === null ? '&' : psep;
     vsep = vsep === undefined || vsep === null ? '=' : vsep;
 
