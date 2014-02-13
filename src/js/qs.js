@@ -28,6 +28,13 @@ function merge_into_object(pair, obj) {
         if (!subkey) {
             obj[key].push( decodeURIComponent(pair.value) );
         }
+    // assume object
+    } else {
+        if (!subkey) {
+            obj[key] = decodeURIComponent( pair.value );
+        } else {
+            merge_into_object({ key: subkey, value: pair.value }, obj[key]);
+        }
     }
 }
 

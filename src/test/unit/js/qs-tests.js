@@ -102,6 +102,85 @@ suite.add(new Y.Test.Case({
     }
 }));
 
+suite.add(new Y.Test.Case({
+
+    name: "object support",
+
+    "basic stuff: 'foo.bar=1' ~> { foo: { bar: 1 } }": function () {
+        var qry = QS('foo.bar=1');
+        var foo = qry.get('foo');
+        Y.Assert.isObject(foo);
+        Y.Assert.areEqual(1, foo.bar);
+    },
+
+    "should support deep hierarchy object": function () {
+        var qry = QS( 'foo.bar.baz.bat_1='+encodeURIComponent('#@!&?1')
+                    +'&foo.bar.baz.bat_2='+encodeURIComponent('#@!&?2')
+                    +'&foo.bar.baz.bat_3='+encodeURIComponent('#@!&?3') );
+
+        var foo = qry.get('foo');
+
+        Y.Assert.isObject(foo);
+        Y.Assert.isObject(foo.bar);
+        Y.Assert.isObject(foo.bar.baz);
+
+        Y.Assert.areSame('#@!&?1', foo.bar.baz.bat_1);
+        Y.Assert.areSame('#@!&?2', foo.bar.baz.bat_2);
+        Y.Assert.areSame('#@!&?3', foo.bar.baz.bat_3);
+    },
+
+
+    "object can have array": function () {
+        var qry = QS( 'foo.bar.baz.bat='+encodeURIComponent('?=@#(1)')
+                    +'&foo.bar.baz.bat='+encodeURIComponent('?=@#(2)')
+                    +'&foo.bar.baz.bat='+encodeURIComponent('?=@#(3)') );
+
+        var foo = qry.get('foo');
+
+        Y.Assert.isObject(foo);
+        Y.Assert.isObject(foo.bar);
+        Y.Assert.isObject(foo.bar.baz);
+        Y.Assert.isArray(foo.bar.baz.bat);
+
+        Y.ArrayAssert.itemsAreEqual(['?=@#(1)','?=@#(2)','?=@#(3)'], foo.bar.baz.bat);
+    },
+
+    "object can have multiple properties": function () {
+        var qry = QS( 'foo.bar_1.baz_1.bat='+encodeURIComponent('&%$£~~<1>')
+                    +'&foo.bar_1.baz_1.bat='+encodeURIComponent('&%$£~~<2>')
+
+                    +'&foo.bar_1.baz_2.bat='+encodeURIComponent('&%$£~~<3>')
+                    +'&foo.bar_1.baz_2.bat='+encodeURIComponent('&%$£~~<4>')
+
+                    +'&foo.bar_2.baz_1.bat='+encodeURIComponent('&%$£~~<5>')
+                    +'&foo.bar_2.baz_1.bat='+encodeURIComponent('&%$£~~<6>')
+
+                    +'&foo.bar_2.baz_2.bat='+encodeURIComponent('&%$£~~<7>')
+                    +'&foo.bar_2.baz_2.bat='+encodeURIComponent('&%$£~~<8>') );
+
+        var foo = qry.get('foo');
+
+        Y.Assert.isObject( foo                 );
+
+        Y.Assert.isObject( foo.bar_1           );
+        Y.Assert.isObject( foo.bar_1.baz_1     );
+        Y.Assert.isArray ( foo.bar_1.baz_1.bat );
+        Y.Assert.isObject( foo.bar_1.baz_2     );
+        Y.Assert.isArray ( foo.bar_1.baz_2.bat );
+
+        Y.Assert.isObject( foo.bar_2           );
+        Y.Assert.isObject( foo.bar_2.baz_1     );
+        Y.Assert.isArray ( foo.bar_2.baz_1.bat );
+        Y.Assert.isObject( foo.bar_2.baz_2     );
+        Y.Assert.isArray ( foo.bar_2.baz_2.bat );
+
+        Y.ArrayAssert.itemsAreEqual(['&%$£~~<1>','&%$£~~<2>'], foo.bar_1.baz_1.bat);
+        Y.ArrayAssert.itemsAreEqual(['&%$£~~<3>','&%$£~~<4>'], foo.bar_1.baz_2.bat);
+        Y.ArrayAssert.itemsAreEqual(['&%$£~~<5>','&%$£~~<6>'], foo.bar_2.baz_1.bat);
+        Y.ArrayAssert.itemsAreEqual(['&%$£~~<7>','&%$£~~<8>'], foo.bar_2.baz_2.bat);
+    }
+}));
+
 Y.Test.Runner.add(suite);
 
 });
